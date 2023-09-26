@@ -1,0 +1,11 @@
+#create registry
+# az acr create --resource-group MD-RG1 --name mdrgregistry --sku Basic --admin-enabled true
+
+#create image
+az acr build --image magicdragonmain:v3 --registry mdrgregistry --file docker-nginx .
+
+# list registry
+az acr list --output table
+
+# list images
+az acr repository list --name mdrgregistry

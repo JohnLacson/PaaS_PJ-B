@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>COVID</title>
+    </head>
+    
+    <body>
+        <br>
+        <hr>
+        <h1 style="background-color: chartreuse;">COVID Update</h1>
+        <hr>
+        <br>
+        <p>Search Country to see the latest statistics of COVID-19</p>
+        <img src="COVID.png" alt="COVID.com" width="300" height="300" style="float: right;">
+        <label for="locationInput">Enter Country :</label>
+        <input type="text" id="locationInput" placeholder="Enter">
+        <button onclick="COVIDData()">Search</button>
+        
+        <div id="covidReport">
+            <!-- COVID data will be displayed here -->
+        </div>
+        <script>
+            function COVIDData()
+            {
+                const locationInput = document.getElementById('locationInput');
+                const covidReport = document.getElementById('covidReport');
+              
+                // API key here
+                 const apiKey = '2833f25109msh720e8069eceb192p1cec52jsn0335612c37f4';
+                
+                 //API url
+                const url = `https://covid-193.p.rapidapi.com/statistics?country=${locationInput.value}`;
+
+                fetch (url, {
+                    method: 'GET',
+                    headers: 
+                {
+                    'X-RapidAPI-Key': apiKey,
+                    'X-RapidAPI-Host': 'covid-193.p.rapidapi.com'
+                }
+
+                }
+                )
+                .then(response => response.json())
+
+                .then (data => {
+                    if (data.response.length > 0) {
+                    const covidData = data.response[0];
+                    const country = covidData.country;
+                    const cases = covidData.cases.total;
+                    const deaths = covidData.deaths.total;
+
+                    covidReport.innerHTML = `
+                    
+                    <h2>COVID Report</h2>
+                    <p><strong> Country: </strong>  ${locationInput.value}</p>
+                    <p><strong> Total Cases: </strong> ${cases}</p>
+                    <p><strong> Total Deaths: </strong>  ${deaths}</p> `
+                    
+                }  else {
+                    covidReport.innerHTML = '<p>Data not found for the entered country.</p>';
+                }
+                })
+
+                .catch(error => {
+                console.error('Error:', error);
+                covidReport.innerHTML = '<p>An error occurred while fetching COVID data.</p>';
+            });
+            }
+           
+        </script>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <p>Want to see the latest news about COVID-19?</p>
+        <p>Read here</p>
+        <li><a href="covidnews.html">COVID</a></li>
+    </body>
+    </body>
+</html>

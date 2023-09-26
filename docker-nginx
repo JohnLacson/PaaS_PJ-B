@@ -1,0 +1,18 @@
+# Use the official Nginx base image
+FROM nginx:alpine
+
+# Copy the HTML code to the Nginx web server directory
+COPY index.html /usr/share/nginx/html
+COPY liveweather.html /usr/share/nginx/html
+COPY quotewithauthor.html /usr/share/nginx/html
+COPY covid.html /usr/share/nginx/html
+COPY covidnews.html /usr/share/nginx/html
+COPY COVID.png /usr/share/nginx/html
+
+# Expose port 80 for HTTP traffic
+EXPOSE 80
+EXPOSE 443
+EXPOSE 8080
+
+# Start Nginx when the container starts
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Covid News</title>
+</head>
+
+<body>
+    <br>
+    <hr>
+    <h1 style="background-color: rgb(255, 85, 0); text-align: center;" >Covid News</h1>
+    <hr>
+    <br>
+
+    <img src="COVID.png" alt="COVID.com" width="200" height="200" style="float: right;">
+    <div id="latestcovidnews">
+        <!-- News will be displayed here -->
+    </div>
+    
+    <script>
+        function fetchCovidNews() {
+            const latestcovidnews = document.getElementById('latestcovidnews');
+
+            // API key here
+            const apiKey = '2833f25109msh720e8069eceb192p1cec52jsn0335612c37f4';
+
+            // API URL
+            const url = 'https://covid-19-news.p.rapidapi.com/v1/covid?q=covid&lang=en&media=True';
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': apiKey,
+                    'X-RapidAPI-Host': 'covid-19-news.p.rapidapi.com'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Clear previous news content
+                latestcovidnews.innerHTML = '';
+
+                // Check if there are news articles in the response
+                if (data.articles && data.articles.length > 0) {
+                    // Loop through the articles and create HTML elements to display them
+                    data.articles.forEach(article => {
+                        const articleElement = document.createElement('div');
+                        articleElement.classList.add('article');
+
+                        const titleElement = document.createElement('h2');
+                        titleElement.innerText = article.title;
+
+                        const descriptionElement = document.createElement('p');
+                        descriptionElement.innerText = article.summary;
+
+                        const linkElement = document.createElement('a');
+                        linkElement.href = article.link;
+                        linkElement.innerText = 'Read more';
+
+                        articleElement.appendChild(titleElement);
+                        articleElement.appendChild(descriptionElement);
+                        articleElement.appendChild(linkElement);
+
+                        latestcovidnews.appendChild(articleElement);
+                    });
+                } else {
+                    latestcovidnews.innerHTML = '<p>No news found.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                latestcovidnews.innerHTML = '<p>An error occurred while fetching news.</p>';
+            });
+        }
+
+        // Call the function to fetch and display news on page load
+        fetchCovidNews();
+    </script>
+</body>
+</html>
